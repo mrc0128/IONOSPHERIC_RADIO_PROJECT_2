@@ -73,16 +73,37 @@ for i = 2:numel(plasma_data)
     if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
         density_vals(end+1) = str2double(row{2});
         speed_vals(end+1) = str2double(row{3});  
-        times(end+1) = t;
+        pl_times(end+1) = t;
     end
 end
 
-fprintf('Mean speed %.1f km/s\n', mean(speed_vals));
+fprintf('Mean speed %.1f km/s\n', mean(speed_vals, 'omitnan'));
 
-fprintf('Mean Density %.2f cm^-3\n', mean(density_vals));
+fprintf('Mean Density %.2f cm^-3\n', mean(density_vals, 'omitnan'));
 
 fprintf('Total Plasma: %df\n', numel(speed_vals));
 
+%debugging speed
+%row = plasma_data{2};
+%disp(str2double(row{3}))
 
-row = plasma_data{2};
-disp(str2double(row{3}))
+%same for parsing kp
+kp_vals = [];
+kp_times = datetime.empty;
+for i = 2:numel(kp_data)
+    row = kp_data{i};
+    t = datetime(row{1}(1:19), 'InputFormat', 'yyyy-MM-dd HH:mm:ss');
+    if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
+        kp_vals(end+1) = str2double(row{2});
+        kp_times(end+1) = t;
+    end
+end
+
+fprintf('Mean Kp: %.2f\n', mean(kp_vals));
+
+fprintf('Max Kp: %.2f\n', max(kp_vals));
+
+fprintf('Total Kp rows: %d\n', numel(kp_vals));
+
+
+
