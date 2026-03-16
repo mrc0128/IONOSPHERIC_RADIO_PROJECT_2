@@ -39,19 +39,26 @@ row = mag_data{2};
 t = datetime(row{1}(1:19), 'InputFormat','yyyy-MM-dd HH:mm:ss');
 disp(t)
 
-%filter for march 10 
+%filter for march 10 store bz values
+
+bz_vals = [];
+times = datetime.empty;
 
 for i = 2:numel(mag_data)
     row = mag_data{i};
     t = datetime(row{1}(1:19), 'InputFormat', 'yyyy-MM-dd HH:mm:ss');
     if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
-        count = count + 1;
+        bz_vals(end+1) = str2double(row{4});
+        times(end+1) = t;
     end
 end
 
+fprintf('Min Bz %.2f nT\n', min(bz_vals));
 
+fprintf('Max Bz %.2f nT\n', max(bz_vals));
 
+fprintf('Mean Bz %.2f nT\n', mean(bz_vals));
 
-
+fprintf('Total MAG %d\n', numel(bz_vals));
 
 
