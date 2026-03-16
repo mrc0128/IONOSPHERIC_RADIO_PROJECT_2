@@ -34,6 +34,22 @@ for i = 2:6
     fprintf('Time: %s Bx: %s Bz: %s Bt: %s\n', row{1}, row{2}, row{4}, row{7})
 end
 
+%datetime conversion 
+row = mag_data{2};
+t = datetime(row{1}(1:19), 'InputFormat','yyyy-MM-dd HH:mm:ss');
+disp(t)
+
+%filter for march 10 
+
+for i = 2:numel(mag_data)
+    row = mag_data{i};
+    t = datetime(row{1}(1:19), 'InputFormat', 'yyyy-MM-dd HH:mm:ss');
+    if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
+        count = count + 1;
+    end
+end
+
+
 
 
 

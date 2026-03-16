@@ -28,6 +28,21 @@ kp_data = jsondecode(kp_raw);
 %row = mag_data{2};
 %disp(row)
 
+%print rows 2-6
+for i = 2:6
+    row = mag_data{i};
+    fprintf('Time: %s Bx: %s Bz: %s Bt: %s\n', row{1}, row{2}, row{4}, row{7})
+end
+
+%datetime conversion 
+row = mag_data{2};
+t = datetime(row{1}(1:19), 'InputFormat','yyyy-MM-dd HH:mm:ss');
+disp(t)
+
+%filter for march 10
+count = 0;
+for i = 2:numel(mag_data)
+
 
 
 
