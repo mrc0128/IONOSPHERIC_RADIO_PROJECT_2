@@ -73,7 +73,7 @@ for i = 2:numel(plasma_data)
     if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
         density_vals(end+1) = str2double(row{2});
         speed_vals(end+1) = str2double(row{3});  
-        times(end+1) = t;
+        pl_times(end+1) = t;
     end
 end
 
@@ -88,22 +88,62 @@ fprintf('Total Plasma: %df\n', numel(speed_vals));
 %disp(str2double(row{3}))
 
 %same for parsing kp
-or i = 2:numel(mag_data)
-    row = mag_data{i};
+kp_vals = [];
+kp_times = datetime.empty;
+for i = 2:numel(kp_data)
+    row = kp_data{i};
     t = datetime(row{1}(1:19), 'InputFormat', 'yyyy-MM-dd HH:mm:ss');
     if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
-        bz_vals(end+1) = str2double(row{4});
-        times(end+1) = t;
+        kp_vals(end+1) = str2double(row{2});
+        kp_times(end+1) = t;
     end
 end
 
-fprintf('Min Bz %.2f nT\n', min(bz_vals));
+fprintf('Mean Kp: %.2f\n', mean(kp_vals));
 
-fprintf('Max Bz %.2f nT\n', max(bz_vals));
+fprintf('Max Kp: %.2f\n', max(kp_vals));
 
-fprintf('Mean Bz %.2f nT\n', mean(bz_vals));
+fprintf('Total Kp rows: %d\n', numel(kp_vals));
 
-fprintf('Total MAG %d\n', numel(bz_vals));
+%parsing solar indices
+lines =readlines('solar_indices.txt');
+for i = 1:numel(lines)
+    line = strtrim(lines(i));
+    if startsWith(line, '2026 03 10')
+        parts = strsplit(line);
+        flux = str2double(parts(4));
+        ssn = str2double(parts(5));
+        fprintf('flux: %d sfu\n', flux);
+        fprintf('Sunspots: %d\n', ssn);
+    end
+end
 
+%kp chart
+figure;
+bar(kp_times, kp_vals);
+ylabel('Kp Index')
+title('Geomagnetic Kp Index - March 10, 2026');
+ylim([0 9]);
+grid on;
 
+%IMF plot
+figure;
+plot(times, bz_vals);
+ylabel('Bz (nT)');
+xlabel('Time (UTC)');
+title('IMF Bz Component - March 10, 2026');
+grid on;
+yline(0, 'k--');
 
+%solar wind plot
+figure;
+yyaxis left
+plot(pl_times, speed_vals);
+ylabel('Speed (km/s)');
+yyaxis right
+plot(pl_times, density_vals, 'r');
+ylabel('Density (cm^{-3})');
+legend('Speed', 'Density');
+
+xlabel('Time (UTC)');
+title('Solar Wind and Plasama - March 10, 2026')

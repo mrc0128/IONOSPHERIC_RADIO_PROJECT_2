@@ -105,5 +105,46 @@ fprintf('Max Kp: %.2f\n', max(kp_vals));
 
 fprintf('Total Kp rows: %d\n', numel(kp_vals));
 
+%parsing solar indices
+lines =readlines('solar_indices.txt');
+for i = 1:numel(lines)
+    line = strtrim(lines(i));
+    if startsWith(line, '2026 03 10')
+        parts = strsplit(line);
+        flux = str2double(parts(4));
+        ssn = str2double(parts(5));
+        fprintf('flux: %d sfu\n', flux);
+        fprintf('Sunspots: %d\n', ssn);
+    end
+end
 
+%kp chart
+figure;
+bar(kp_times, kp_vals);
+ylabel('Kp Index')
+title('Geomagnetic Kp Index - March 10, 2026');
+ylim([0 9]);
+grid on;
 
+%IMF plot
+figure;
+plot(times, bz_vals);
+ylabel('Bz (nT)');
+xlabel('Time (UTC)');
+title('IMF Bz Component - March 10, 2026');
+grid on;
+yline(0, 'k--');
+
+%solar wind plot
+figure;
+yyaxis left
+plot(pl_times, speed_vals);
+ylabel('Speed (km/s)');
+yyaxis right
+plot(pl_times, density_vals, 'r');
+ylabel('Density (cm^{-3})');
+legend('Speed', 'Density');
+
+xlabel('Time (UTC)');
+title('Solar Wind and Plasama - March 10, 2026');
+grid on;
