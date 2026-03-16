@@ -62,3 +62,27 @@ fprintf('Mean Bz %.2f nT\n', mean(bz_vals));
 fprintf('Total MAG %d\n', numel(bz_vals));
 
 
+%same for plasma
+speed_vals = [];
+density_vals = [];
+pl_times = datetime.empty;
+
+for i = 2:numel(plasma_data)
+    row = plasma_data{i};
+    t = datetime(row{1}(1:19), 'InputFormat', 'yyyy-MM-dd HH:mm:ss');
+    if datestr(t, 'yyyy-mm-dd') == '2026-03-10'
+        density_vals(end+1) = str2double(row{2});
+        speed_vals(end+1) = str2double(row{3});  
+        times(end+1) = t;
+    end
+end
+
+fprintf('Mean speed %.1f km/s\n', mean(speed_vals));
+
+fprintf('Mean Density %.2f cm^-3\n', mean(density_vals));
+
+fprintf('Total Plasma: %df\n', numel(speed_vals));
+
+
+row = plasma_data{2};
+disp(str2double(row{3}))
