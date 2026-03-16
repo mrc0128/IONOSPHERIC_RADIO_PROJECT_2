@@ -1,10 +1,4 @@
 websave('test.json', 'https://services.swpc.noaa.gov/products/solar-wind/mag-7-day.json');
 disp('Download successful!');
 
-raw = fileread('test.json');
-data = jsondecode(raw);
-%disp(data;
-
-for i = 1:5
-    disp(data{i});
-end 
+raw = r
